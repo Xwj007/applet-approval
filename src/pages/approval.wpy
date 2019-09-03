@@ -1,0 +1,245 @@
+<style lang="scss" scoped>
+// .section{
+//   display: flex;
+//   flex-direction:row;
+//   // width: 100%;
+//    line-height: 70rpx;
+//   height:auto;
+//   padding:0 20rpx 20rpx 20rpx
+// }
+// .block_title{
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+// }
+// .blockBox{
+//   width: 20rpx;
+//   height: 40rpx;
+//   background: #2d8cf0 
+// }
+// .apText{
+//     font-weight: 500;
+//     color: #606266;
+//     padding-left:20rpx;
+//     font-size: 32rpx;
+//     line-height: 70rpx;
+// }
+
+
+// .section__title{
+//   font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+//   color: #606266;
+//   // display: block;
+//   width: 200rpx;
+//   font-size: 30rpx;
+//   font-weight: 700;
+// }
+// .apInput{
+//     background-color: white;
+//     border: 2px solid #eee;
+//     box-sizing: border-box;
+//     border-radius: 15rpx;
+//     color: #363636;
+//     width:100%;
+//     font-size: 30rpx;
+//     line-height: 70rpx;
+//     height:70rpx;
+//     padding-left:20rpx;
+//     padding-right:20rpx;
+//     // margin-left: 20rpx;
+// }
+// .apTextarea{
+//     height:140rpx;
+// }
+// .apInput:hover,.apTextarea:hover{    
+//   border-color: #409eff;
+// }
+
+.billInput{
+  width:70%;
+}
+.apButton{
+  font-size: 30rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  width: 30%;
+}
+.apSubmitBtn{
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  width: 100%;
+}
+.btn{
+    background: #2d8cf0;
+  color: white;
+  border-radius: 15rpx;
+}
+
+</style>
+
+<template>
+  <view class="ap">
+      <form bindsubmit="formSubmit" bindreset="formReset" class="apForm">
+        <view class="block_title">
+          <view class="blockBox"></view>
+          <view class="apText">审批事件</view>
+        </view>
+        <view wx:show="{{true}}" class="section">
+          <view class="section__title">事件id</view>
+          <input disabled placeholder="please input here" name="eventId" class="apInput" value="{{apForm.event.id}}"/>
+        </view>
+        <view class="section">
+          <view class="section__title">发起人</view>
+          <input disabled placeholder="please input here" class="apInput" value="{{apForm.event.creatorName}}"/>
+        </view>
+        <view class="section">
+          <view class="section__title">单据</view>
+          <input placeholder="please input here" class="apInput billInput" value="{{apForm.event.billName}}"/>
+          <button class="btn apButton" @tap="click({{apForm.event.billNo}})">查看</button>
+        </view>
+        <view class="section">
+          <view class="section__title">事件名</view>
+          <input disabled placeholder="please input here" class="apInput" value="{{apForm.event.eventName}}"/>
+        </view>
+        <view class="section">
+          <view class="section__title">审批次序</view>
+          <input disabled placeholder="please input here" class="apInput" value="{{apForm.event.sortNo}}"/>
+        </view>
+        <view class="section">
+          <view class="section__title">发起日期</view>
+          <input disabled placeholder="please input here" class="apInput" value="{{apForm.event.createDate}}"/>
+        </view>
+        <view class="section">
+          <view class="section__title">备注</view>
+          <input disabled placeholder="please input here" class="apInput" value="{{apForm.event.eventDescription}}"/>
+        </view>
+        <view class="block_title">
+          <view class="blockBox"></view>
+          <view class="apText">当前阶段</view>
+        </view>
+        <view class="section">
+          <view class="section__title">阶段名</view>
+          <input disabled placeholder="please input here" class="apInput" value="{{apForm.currentStep.stepName}}"/>
+        </view>
+        <view class="section">
+          <view class="section__title">阶段次序</view>
+          <input disabled placeholder="please input here" class="apInput" value="{{apForm.currentStep.percent}}"/>
+        </view>
+        <view class="block_title">
+          <view class="blockBox"></view>
+          <view class="apText">结果</view>
+        </view>
+        <view class="section section_gap">
+          <view class="section__title">审批结果</view>
+          <radio-group name="apResult" bindchange="radiochange" class="apInput">
+            <label><radio color="#2d8cf0" class="ap_radio" value="pass" checked="{{pass}}"/>通过  </label>
+            <label class="apRadio"><radio color="#2d8cf0" value="notPass" checked="{{notPass}}"/>不通过  </label>
+            <label class="apRadio"><radio color="#2d8cf0" value="todo" checked="{{todo}}"/>未审批  </label>
+          </radio-group>
+        </view>
+        <view class="section">
+          <view class="section__title">意见</view>
+          <textarea name="apComment" placeholder="请输入意见" class="apInput apTextarea" value="{{apForm.stepStaff.apComment}}"/>
+          <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
+        </view>
+        <view class="section btn-area">
+          <button class="btn apSubmitBtn" form-type="submit">提交</button>
+        </view>
+      </form>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import {getApForm,changeTime,performApproval} from '../api/api'
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '表单页'
+    }
+    components = {
+
+    }
+
+    mixins = []
+
+    data = {
+      apForm:{},
+      pass:false,
+      notPass:false,
+      todo:false
+
+    }
+
+    methods = {
+      formSubmit: function(e) {
+        let data ={
+          auditorId:wepy.$instance.globalData.userInfo,
+          eventId:e.detail.value.eventId,
+          result: e.detail.value.apResult,
+          remarks:e.detail.value.apCommentv
+        }
+        performApproval(data)
+        console.log('form发生了submit事件，携带数据为：', e.detail.value,data)
+      },
+      radiochange: function (e) {
+        console.log('form发生了radio事件，携带数据为：', e.detail.value)
+      },
+      click(value){
+        console.log(111,value);
+        wepy.navigateTo({
+          url: `/pages/bill?billNo=${value}`
+        })
+        
+      }
+    }
+    getBill(e){
+      console.log(111,e);
+      
+    }
+    async getForm (data){
+      let obj = await getApForm(data)
+      
+      console.log(obj);
+      // this.stepForm.percent=this.stepForm.sortNo+'/'+this.stepForm.stepCount
+      obj.event.createDate=changeTime(obj.event.createDate)
+      obj.currentStep.percent=obj.currentStep.sortNo+'/'+obj.currentStep.stepCount
+      this.apForm =obj
+      switch (obj.stepStaff.apResult) {
+        case "3":
+            this.pass=true
+            obj.stepStaff.apResult="pass"
+          break;
+        case "1":
+            this.todo=true
+            obj.stepStaff.apResult="todo"
+          break;
+        case "4":
+            this.notPass=true
+            obj.stepStaff.apResult="notPass"
+          break;
+      }
+      this.$apply()
+      
+    }
+    events = {
+
+    }
+
+    onLoad(option) {
+      // 登录时调试使用
+      let req = {
+        "queryId":option.stepStaffId,
+        "queryMethod":"stepStaff"
+      }
+      // 单页面调试使用
+      // let req = {
+      //   "queryId":58033,
+      //   "queryMethod":"stepStaff"
+      // }
+      console.log(wepy.$instance.globalData.userInfo);
+      console.log(option);
+      
+      this.getForm(req)
+    }
+  }
+</script>

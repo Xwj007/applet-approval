@@ -1,0 +1,182 @@
+<style lang="scss" scoped>
+.vertical-table{
+  display: flex;
+  flex-direction: row;
+  margin-top: 28rpx;
+  margin-bottom: 28rpx;
+  margin-left: 20rpx;
+  margin-right:20rpx;
+  font-size: 30rpx;
+  
+}
+.vertical-thead{
+  // background: #eee;
+  width: 200rpx;
+}
+.vertical-tbody{
+  background: white;
+  display: flex;
+  width: 100%
+}
+.vertical-thead .vertical-tr .th{
+  border: 1px solid #eee
+}
+.vertical-tbody .vertical-tr{
+  background: white;
+  width: 100%;
+  box-sizing: border-box
+}
+.vertical-tbody .vertical-tr .td{
+  border: 1px solid #eee;
+}
+</style>
+
+<template>
+    <view>
+      <form>
+        <view class="block_title">
+          <view class="blockBox"></view>
+          <view class="apText">目标单据</view>
+        </view>
+        <view class="section">
+          <view class="section__title">申请号</view>
+          <input disabled placeholder="please input here" class="apInput" value="{{billData.applyNo}}"/>
+        </view>
+        <view class="section">
+          <view class="section__title">生成方式</view>
+          <input placeholder="please input here" class="apInput billInput" value="{{billData.applyType}}"/>
+        </view>
+        <view class="section">
+          <view class="section__title">状态</view>
+          <input disabled placeholder="please input here" class="apInput" value="{{billData.status}}"/>
+        </view>
+        <view class="section">
+          <view class="section__title">创建人</view>
+          <input disabled placeholder="please input here" class="apInput" value="{{billData.creatorName}}"/>
+        </view>
+        <view class="section">
+          <view class="section__title">项目</view>
+          <input disabled placeholder="please input here" class="apInput" value="{{billData.projectName}}"/>
+        </view>
+        <view class="section">
+          <view class="section__title">创建日期</view>
+          <input disabled placeholder="please input here" class="apInput" value="{{billData.createDate}}"/>
+        </view>
+        <view class="section">
+          <view class="section__title">申请人</view>
+          <input disabled placeholder="please input here" class="apInput" value="{{billData.applyBy}}"/>
+        </view>
+        <view class="section">
+          <view class="section__title">计划收货</view>
+          <input disabled placeholder="please input here" class="apInput" value="{{billData.planDate}}"/>
+        </view>
+        <view class="section">
+          <view class="section__title">申请部门</view>
+          <input name="apComment" placeholder="please input here" class="apInput" value="{{billData.applyDepartment}}"/>
+          <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
+        </view>
+        <view class="section">
+          <view class="section__title">截止日期</view>
+          <input name="apComment" placeholder="please input here" class="apInput " value="{{billData.expirationDate}}"/>
+          <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
+        </view>
+        <view class="section">
+          <view class="section__title">备注</view>
+          <textarea name="apComment" placeholder="please input here" class="apInput apTextarea" value="{{billData.comments}}"/>
+        </view>
+      </form>
+      <view class="block_title">
+        <view class="blockBox"></view>
+        <view class="apText">物料表</view>
+      </view>
+     <view class='vertical-table'  wx:for="{{applyListList}}" wx:key="{{index}}">
+        <view class="vertical-thead">
+          <view class='vertical-tr'>
+              <view class="th  blackFont " wx:for="{{billthemeArr}}" wx:key="{{index}}">{{item}}</view>
+            </view>
+        </view>
+        <view class="vertical-tbody" >
+            <view class="vertical-tr {{(index%2==1)?'lightBg':''}}"  >
+                <view class="td {{(index%2==1)?'lightBg':''}}" wx:for="{{item}}" wx:key="{{index}}">{{item}}</view>
+            </view>
+        </view>
+        </view>
+    </view>
+    
+</template>
+<script>
+import wepy from 'wepy'
+import { getBill,changeTime,changNames } from "../api/api";
+import Table from '../components/tableTpl'
+export default class bill extends wepy.page{
+    config = {
+      navigationBarTitleText: '单据'
+    }
+    components = {
+      billTab:Table
+    }
+    data = {
+      billthemeArr:{
+        listType: "明细状态",
+        item: "物料编码",
+        itemName: "物料名称",
+        listType:'采购类型',
+        quantity: "申请数量",
+        unitName: "单位",
+        unitType: "单位类型",
+        warehouseName: "库房",
+        projectName:'项目',
+        planDate: "计划收货",
+        itemCCGG: "物料规格",
+        kltc:"工艺要求",
+        comments:"备注",
+        purchaseStaffName: "采购员",
+        createDate: "创建日期",
+        creatorName: "创建人"
+      }, 
+      billData:{},
+      applyListList:[]
+    }
+    methods ={
+
+    }
+    async getApBill (data){
+        let obj = await getBill(data)
+        changNames(obj,obj.applyListList)
+        this.billData=obj
+        var arr =obj.applyListList
+        this.applyListList=[]
+        for (let x = 0; x < arr.length; x++) {
+          this.applyListList.push({
+            listType:arr[x].listType,
+            item:arr[x].item,
+            itemName:arr[x].itemName,
+            listType:arr[x].listType,
+            quantity:arr[x].quantity,
+            unitName:arr[x].unitName,
+            unitType:arr[x].unitType,
+            warehouseName:arr[x].warehouseName,
+            projectName:arr[x].projectName,
+            planDate:changeTime(arr[x].planDate),
+            itemCCGG:arr[x].itemCCGG,
+            kltc:arr[x].kltc,
+            comments:arr[x].comments,
+            purchaseStaffName:arr[x].purchaseStaffName,
+            createDate:changeTime(arr[x].createDate),
+            creatorName:arr[x].creatorName
+          })
+          
+        }  
+    }
+    events = {
+
+    }
+    onLoad (option){
+      // 登录测试使用
+        // this.getApBill(option.billNo)
+      // 单页面调试使用
+      this.getApBill('PA000000014')
+        console.log(option.billNo)
+    }
+}
+</script>

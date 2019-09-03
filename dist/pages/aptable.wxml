@@ -1,0 +1,42 @@
+
+  <view class="box _1fd6396">
+      <view class="top _1fd6396">
+                <picker class="box-picker _1fd6396" range="{{objectArray}}" value="{{idx}}" bindchange="bindPickerChange" range-key="name" data-id="{{objectArray[index].id}}">
+                    <view class="picker top-picker _1fd6396">
+                        <input class="title input-box _1fd6396" type="text" placeholder-style="color:#2d8cf0" placeholder="点击选择审批事件状态" value="{{objectArray[index].name}}"/>
+                        <!-- <text class="title" >{{objectArray[index].name}}</text> -->
+                    </view>
+                </picker>
+      </view>
+      <view class="main _1fd6396">
+          <!-- 审批事件表格组件 -->
+          
+    <view class="table _3b5af5c _1fd6396">
+        <view class="thead _3b5af5c">
+            <view class="tr _3b5af5c">
+                  <view class="th  blackFont  _3b5af5c"  wx:for="{{$tab$tableThemes}}" wx:key="{{index}}">{{item}}</view>
+              </view>
+          </view>
+          <view class="tbody _3b5af5c">
+              <view bindtap="$tab$tapCilck" class="tr {{(index%2==1)?'lightBg':''}} _3b5af5c"  wx:for="{{$tab$tableItems}}" wx:key="{{index}}" data-wpytapcilck-a="{{$tab$tableItems[index]}}">
+                  <view class="td _3b5af5c" wx:for="{{item}}" wx:key="{{index}}">{{item}}</view>
+              </view>
+          </view>
+        </view>
+          <button bindtap="checkHaveData" class="_1fd6396">test</button>
+          <view  wx:if="{{ haveData}}" class="_1fd6396">暂无数据</view>
+          <!-- 手写表格 -->
+          <!-- <tr>
+              <td>审批事件名</td>
+              <td>审批阶段名</td>
+              <td>发起人</td>
+              <td>操作</td>
+          </tr>
+          <tr wx:for="{{eventTab}}" wx:key="{{eventId}}">
+              <td>{{item.eventName}}</td>
+              <td>{{item.stepName}}</td>
+              <td>{{item.eventCreatorList[0].creatorName}}</td>
+          </tr> -->
+      </view>
+
+  </view>

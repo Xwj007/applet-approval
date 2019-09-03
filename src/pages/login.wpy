@@ -1,0 +1,150 @@
+<!--index.wxml-->
+<template>
+  <view class="container ">
+      <view class='box-title'>
+        <image class='img' src='../components/assets/logo.png'></image><text class='title-text'>XXXX科技</text>
+      </view>
+      <view class='box section'>
+        <text class='input-label' >账号：</text> <input value='{{id}}' class='inputBOX' bindinput="accountId"  type='text'/>
+      </view>
+      <view class='box section'>
+        <text class='input-label'>密码：</text><input value="{{password}}" password class='inputBOX' type='password' bindinput='pwd' />
+      </view>
+      <!-- <view class='box'> -->
+        <button class='button' bindtap='login'> 登陆 </button>
+      <!-- </view> -->   
+</view>
+</template>
+<script>
+import wepy from 'wepy'
+export default class login extends wepy.page {
+  config = {
+      navigationBarTitleText: '登录'
+    }
+    components = {
+
+    }
+
+    mixins = []
+
+    data = {
+      loginfo:{
+        id:'',
+        password:'',
+      }
+    }
+
+    methods = {
+       login(){
+      wx.request({
+      url: 'http://139.199.126.58:9000/user/login',
+      data: this.loginfo ,
+      // header: {
+      //   "Content-Type": "application/x-www-form-urlencoded"
+      // },
+      method: 'POST',
+      dataType: 'json',
+      success: function(res) {
+        if(res.data.status==1){
+          wepy.showToast({
+            title: '登陆成功',
+            icon: 'success',
+            duration: 2000
+          })
+          var thist=this
+          wepy.$instance.globalData.userInfo = res.data.data.USERID
+          console.log(wepy.$instance.globalData);
+          
+          wepy.navigateTo({
+            url: '/pages/aptable',
+          })
+        } else if (res.data.status == 0) {
+          wepy.showToast({
+            title: res.data.msg,
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      },
+      fail: function (response) {
+        console.log(response.errMsg);
+      }
+    })
+    } 
+    }
+    accountId(e) {
+      // 原生方法
+      // this.setData({
+      //   account: e.detail.value
+      // })
+      //wepy方法
+      this.loginfo.id=e.detail.value
+    }
+    pwd(e) {
+      this.loginfo.password= e.detail.value
+    }
+   
+   events = {
+    }
+
+    onLoad() {
+    }
+}
+</script>
+
+<style lang="less" scoped>
+/**index.wxss**/
+.container{
+  margin-top: 30%;
+  width: 750rpx;
+  display: flex;
+}
+.box-title{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-bottom: 50rpx;
+}
+.box{
+  margin-bottom: 30rpx;
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.input-label{
+  font-size: 16px;
+  color: gray;
+}
+.inputBOX{
+  border: 2px solid #eee;
+  margin-top: 25rpx;
+  font-size: 16px;
+  border-radius: 15rpx;
+  height:64rpx;
+  background: white;
+  padding-left:  20rpx ;
+}
+.inputBOX:focus{
+  border: 2px solid royalblue;
+  box-shadow: 5px #515a6e
+}
+.button{
+  // width: 200rpx;
+  border: 1px solid #eee;
+  border-radius: 15rpx;
+  font-size: 16px;
+  color: cornflowerblue;
+  background: white
+}
+.img{
+  width: 100rpx;
+  height: 100rpx;
+}
+.title-text{
+  color: cornflowerblue;
+  font-size: 20px;
+}
+</style>
+

@@ -1,0 +1,70 @@
+
+  <view class="ap _71e379e">
+      <form bindsubmit="formSubmit" bindreset="formReset" class="apForm _71e379e">
+        <view class="block_title _71e379e">
+          <view class="blockBox _71e379e"/>
+          <view class="apText _71e379e">审批事件</view>
+        </view>
+        <view  wx:show="{{true}}" class="section _71e379e">
+          <view class="section__title _71e379e">事件id</view>
+          <input disabled placeholder="please input here" name="eventId" class="apInput _71e379e" value="{{apForm.event.id}}"/>
+        </view>
+        <view class="section _71e379e">
+          <view class="section__title _71e379e">发起人</view>
+          <input disabled placeholder="please input here" class="apInput _71e379e" value="{{apForm.event.creatorName}}"/>
+        </view>
+        <view class="section _71e379e">
+          <view class="section__title _71e379e">单据</view>
+          <input placeholder="please input here" class="apInput billInput _71e379e" value="{{apForm.event.billName}}"/>
+          <button class="btn apButton _71e379e" bindtap="click" data-wpyclick-a="{{apForm.event.billNo}}">查看</button>
+        </view>
+        <view class="section _71e379e">
+          <view class="section__title _71e379e">事件名</view>
+          <input disabled placeholder="please input here" class="apInput _71e379e" value="{{apForm.event.eventName}}"/>
+        </view>
+        <view class="section _71e379e">
+          <view class="section__title _71e379e">审批次序</view>
+          <input disabled placeholder="please input here" class="apInput _71e379e" value="{{apForm.event.sortNo}}"/>
+        </view>
+        <view class="section _71e379e">
+          <view class="section__title _71e379e">发起日期</view>
+          <input disabled placeholder="please input here" class="apInput _71e379e" value="{{apForm.event.createDate}}"/>
+        </view>
+        <view class="section _71e379e">
+          <view class="section__title _71e379e">备注</view>
+          <input disabled placeholder="please input here" class="apInput _71e379e" value="{{apForm.event.eventDescription}}"/>
+        </view>
+        <view class="block_title _71e379e">
+          <view class="blockBox _71e379e"/>
+          <view class="apText _71e379e">当前阶段</view>
+        </view>
+        <view class="section _71e379e">
+          <view class="section__title _71e379e">阶段名</view>
+          <input disabled placeholder="please input here" class="apInput _71e379e" value="{{apForm.currentStep.stepName}}"/>
+        </view>
+        <view class="section _71e379e">
+          <view class="section__title _71e379e">阶段次序</view>
+          <input disabled placeholder="please input here" class="apInput _71e379e" value="{{apForm.currentStep.percent}}"/>
+        </view>
+        <view class="block_title _71e379e">
+          <view class="blockBox _71e379e"/>
+          <view class="apText _71e379e">结果</view>
+        </view>
+        <view class="section section_gap _71e379e">
+          <view class="section__title _71e379e">审批结果</view>
+          <radio-group name="apResult" bindchange="radiochange" class="apInput _71e379e">
+            <label class="_71e379e"><radio color="#2d8cf0" class="ap_radio _71e379e" value="pass" checked="{{pass}}"/>通过  </label>
+            <label class="apRadio _71e379e"><radio color="#2d8cf0" value="notPass" checked="{{notPass}}" class="_71e379e"/>不通过  </label>
+            <label class="apRadio _71e379e"><radio color="#2d8cf0" value="todo" checked="{{todo}}" class="_71e379e"/>未审批  </label>
+          </radio-group>
+        </view>
+        <view class="section _71e379e">
+          <view class="section__title _71e379e">意见</view>
+          <textarea name="apComment" placeholder="请输入意见" class="apInput apTextarea _71e379e" value="{{apForm.stepStaff.apComment}}"/>
+          <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
+        </view>
+        <view class="section btn-area _71e379e">
+          <button class="btn apSubmitBtn _71e379e" form-type="submit">提交</button>
+        </view>
+      </form>
+  </view>

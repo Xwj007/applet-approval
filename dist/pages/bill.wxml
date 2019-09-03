@@ -1,0 +1,71 @@
+
+    <view class="_2f36416">
+      <form class="_2f36416">
+        <view class="block_title _2f36416">
+          <view class="blockBox _2f36416"/>
+          <view class="apText _2f36416">目标单据</view>
+        </view>
+        <view class="section _2f36416">
+          <view class="section__title _2f36416">申请号</view>
+          <input disabled placeholder="please input here" class="apInput _2f36416" value="{{billData.applyNo}}"/>
+        </view>
+        <view class="section _2f36416">
+          <view class="section__title _2f36416">生成方式</view>
+          <input placeholder="please input here" class="apInput billInput _2f36416" value="{{billData.applyType}}"/>
+        </view>
+        <view class="section _2f36416">
+          <view class="section__title _2f36416">状态</view>
+          <input disabled placeholder="please input here" class="apInput _2f36416" value="{{billData.status}}"/>
+        </view>
+        <view class="section _2f36416">
+          <view class="section__title _2f36416">创建人</view>
+          <input disabled placeholder="please input here" class="apInput _2f36416" value="{{billData.creatorName}}"/>
+        </view>
+        <view class="section _2f36416">
+          <view class="section__title _2f36416">项目</view>
+          <input disabled placeholder="please input here" class="apInput _2f36416" value="{{billData.projectName}}"/>
+        </view>
+        <view class="section _2f36416">
+          <view class="section__title _2f36416">创建日期</view>
+          <input disabled placeholder="please input here" class="apInput _2f36416" value="{{billData.createDate}}"/>
+        </view>
+        <view class="section _2f36416">
+          <view class="section__title _2f36416">申请人</view>
+          <input disabled placeholder="please input here" class="apInput _2f36416" value="{{billData.applyBy}}"/>
+        </view>
+        <view class="section _2f36416">
+          <view class="section__title _2f36416">计划收货</view>
+          <input disabled placeholder="please input here" class="apInput _2f36416" value="{{billData.planDate}}"/>
+        </view>
+        <view class="section _2f36416">
+          <view class="section__title _2f36416">申请部门</view>
+          <input name="apComment" placeholder="please input here" class="apInput _2f36416" value="{{billData.applyDepartment}}"/>
+          <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
+        </view>
+        <view class="section _2f36416">
+          <view class="section__title _2f36416">截止日期</view>
+          <input name="apComment" placeholder="please input here" class="apInput  _2f36416" value="{{billData.expirationDate}}"/>
+          <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
+        </view>
+        <view class="section _2f36416">
+          <view class="section__title _2f36416">备注</view>
+          <textarea name="apComment" placeholder="please input here" class="apInput apTextarea _2f36416" value="{{billData.comments}}"/>
+        </view>
+      </form>
+      <view class="block_title _2f36416">
+        <view class="blockBox _2f36416"/>
+        <view class="apText _2f36416">物料表</view>
+      </view>
+     <view class="vertical-table _2f36416"  wx:for="{{applyListList}}" wx:key="{{index}}">
+        <view class="vertical-thead _2f36416">
+          <view class="vertical-tr _2f36416">
+              <view class="th  blackFont  _2f36416" wx:for="{{billthemeArr}}" wx:key="{{index}}">{{item}}</view>
+            </view>
+        </view>
+        <view class="vertical-tbody _2f36416">
+            <view class="vertical-tr {{(index%2==1)?'lightBg':''}} _2f36416">
+                <view class="td {{(index%2==1)?'lightBg':''}} _2f36416" wx:for="{{item}}" wx:key="{{index}}">{{item}}</view>
+            </view>
+        </view>
+        </view>
+    </view>

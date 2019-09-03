@@ -1,0 +1,69 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+page {
+  background: #f5f7f9;
+}
+.section {
+  display: flex;
+  flex-direction: row;
+  line-height: 70rpx;
+  height: auto;
+  padding: 0 20rpx 20rpx 20rpx;
+}
+.section__title {
+  font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #606266;
+  width: 200rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+.apInput {
+  background-color: white;
+  border: 2px solid #eee;
+  box-sizing: border-box;
+  border-radius: 15rpx;
+  color: #363636;
+  width: 100%;
+  font-size: 30rpx;
+  line-height: 70rpx;
+  height: 70rpx;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+}
+.block_title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.blockBox {
+  width: 20rpx;
+  height: 40rpx;
+  background: #2d8cf0;
+}
+.apTextarea {
+  height: 140rpx;
+}
+.apInput:hover,
+.apTextarea:hover {
+  border-color: #409eff;
+}
+.apText {
+  font-weight: 500;
+  color: #606266;
+  padding-left: 20rpx;
+  font-size: 32rpx;
+  line-height: 70rpx;
+}
+.lightBg {
+  background: #f8f8f9;
+}
+.blackFont {
+  color: #515a6e;
+  font-weight: bold;
+}

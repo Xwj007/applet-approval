@@ -1,0 +1,76 @@
+{
+	"description": "A WePY project",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true,
+		"coverView": true,
+		"autoAudits": false,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		}
+	},
+	"compileType": "miniprogram",
+	"appid": "touristappid",
+	"projectname": "test1",
+	"miniprogramRoot": "dist/",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": 3,
+			"list": [
+				{
+					"id": 0,
+					"name": "index",
+					"pathName": "pages/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 1,
+					"name": "表格",
+					"pathName": "pages/aptable",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "表单",
+					"pathName": "pages/approval",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 3,
+					"name": "单据",
+					"pathName": "pages/bill",
+					"query": "",
+					"scene": null
+				}
+			]
+		}
+	}
+}

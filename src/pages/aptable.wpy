@@ -1,0 +1,219 @@
+<style lang="scss" scoped>
+
+.box{
+    display: flex;
+    flex-direction: column;
+    
+}
+.main{
+    // margin-top:20rpx;
+    // border: 1px solid blue;
+    background: white;
+    margin: 15rpx 20rpx;
+}
+.box-picker{
+    margin: 20rpx 20rpx;
+    vertical-align: middle;
+}
+.top-picker{
+    cursor:pointer;
+    background: white;
+    box-shadow: 1px 2px 2px  rgb(243, 241, 241);
+    border-radius: 2px;
+    text-align: center;
+}
+.input-box{
+    vertical-align: middle;
+    height: 90rpx;
+    line-height: 90rpx;
+    border-radius: 4rpx;
+}
+.section{
+    // border: 2px solid red
+}
+.title{
+    color: #2d8cf0;
+    font-size: 16px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border:2px solid 2px solid #eee;
+    border-radius: 15rpx;
+}
+
+</style>
+
+<template>
+  <view class="box">
+      <view class="top">
+                <picker class="box-picker" range='{{objectArray}}' value='{{idx}}' bindchange='bindPickerChange' range-key="name" data-id='{{objectArray[index].id}}'>
+                    <view class="picker top-picker">
+                        <input class="title input-box"  type="text" placeholder-style="color:#2d8cf0" placeholder="点击选择审批事件状态" value="{{objectArray[index].name}}"/>
+                        <!-- <text class="title" >{{objectArray[index].name}}</text> -->
+                    </view>
+                </picker>
+      </view>
+      <view class="main">
+          <!-- 审批事件表格组件 -->
+          <tab :tableThemes.sync="themeArr" :tableItems.sync="eventTab"></tab>
+          <button @tap="checkHaveData">test</button>
+          <view wx:if="{{ haveData}}">暂无数据</view>
+          <!-- 手写表格 -->
+          <!-- <tr>
+              <td>审批事件名</td>
+              <td>审批阶段名</td>
+              <td>发起人</td>
+              <td>操作</td>
+          </tr>
+          <tr wx:for="{{eventTab}}" wx:key="{{eventId}}">
+              <td>{{item.eventName}}</td>
+              <td>{{item.stepName}}</td>
+              <td>{{item.eventCreatorList[0].creatorName}}</td>
+          </tr> -->
+      </view>
+
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import { getTable,getApTable } from "../api/api";
+  import Table from '../components/tableTpl'
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '表格页面'
+    }
+    components = {
+        tab:Table
+    }
+
+    mixins = []
+// eventCreatorList: [{…}]
+// eventId: "58017"
+// eventName: "采购申请立项[PA000000014]的审批事件1"
+// stepId: "58018"
+// stepName: "阶段1"
+// stepStaffId: "58019"
+    data = {
+        themeArr: {eventId:'编号', eventName: '审批事件名'},   
+        eventTab:[],
+        index:undefined,
+        userId:undefined,
+        objectArray: [
+                {
+                    id: 'all',
+                    status:'all',
+                    name: '全部'
+                },
+                {
+                    id: 'done',
+                    status:'done',
+                    name: '已执行'
+                },
+                {
+                    id: 'todo',
+                    status:'todo',
+                    name: '未执行'
+                }
+        ], 
+        haveData:true,
+    }
+    events={
+        'childFn': (number,$event) => {
+            console.log(number)
+            wepy.navigateTo({
+                url: `/pages/approval?stepStaffId=${number}`,
+            })
+               console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`);
+        }
+    }
+    
+    methods = {  
+        // 测试invoke
+        parentFn (e) {
+            // this.$invoke(Table, tapCilck());
+            console.log('parent received emit event, number is: ' + e)
+        },
+        // 删减table内容
+        cutTable (table) {
+            this.eventTab=[]
+            for (let index = 0; index < table.length; index++) {
+                this.eventTab.push({stepStaffId:table[index].stepStaffId,eventName:table[index].eventName,})
+            }
+            return this.eventTab
+        },
+        
+    }
+    //判断是否有数据
+    checkHaveData() {        
+        if (this.eventTab.length==0) {
+            this.haveData= true
+        } else {
+            this.haveData= false
+        }
+    }
+    async bindPickerChange(e) {
+        // console.log(e);
+        // console.log('picker发送选择改变，索引值为', e.detail.value)
+        // console.log("选中的id值:"+e.target.dataset.id)
+        this.setData({
+            index: e.detail.value
+        })
+        var status=''
+        if (e.detail.value==0) {
+            status="all"
+        }else if (e.detail.value==1) {
+            status="done"
+        }else if (e.detail.value==2) {
+            status="todo"
+        }
+        var searchinfo ={
+        userId:"101",
+        status:status
+        }
+        // this.eventTab =await getApTable(searchinfo)
+        let table = await getApTable(searchinfo)
+        this.eventTab=[]
+        for (let index = 0; index < table.length; index++) {
+            this.eventTab.push({stepStaffId:table[index].stepStaffId,eventName:table[index].eventName,})
+        }
+        
+        this.$apply()
+    }
+    async loadTable (data){
+        let table = await getApTable(data)
+        this.eventTab=[]
+        for (let index = 0; index < table.length; index++) {
+            this.eventTab.push({stepStaffId:table[index].stepStaffId,eventName:table[index].eventName,})
+        }
+        await this.checkHaveData()
+        this.$apply()
+    }
+
+    onLoad() {
+    //登录后使用
+    //    if (wepy.$instance.globalData.userInfo) {
+    //         let redata =  {
+    //         "userId":wepy.$instance.globalData.userInfo,
+    //         "status":"done"
+    //         }
+    //         this.loadTable(redata)
+    //     }else{
+    //         wepy.showToast({
+    //         title: '请先登录',
+    //         icon: 'none',
+    //         duration: 2000
+    //       })
+    //       wepy.navigateTo({
+    //           url: '/pages/login'
+    //       })
+    //     }
+
+        // aptable单页面调试时使用
+        var redata= {
+    	"userId":"101",
+    	"status":"all"
+        }
+        this.loadTable(redata)
+       console.log('onload'); 
+    }
+  }
+</script>

@@ -1,0 +1,15 @@
+
+  <view class="container  _1fdec9f">
+      <view class="box-title _1fdec9f">
+        <image class="img _1fdec9f" src="../components/assets/logo.png"/><text class="title-text _1fdec9f">XXXX科技</text>
+      </view>
+      <view class="box section _1fdec9f">
+        <text class="input-label _1fdec9f">账号：</text> <input value="{{id}}" class="inputBOX _1fdec9f" bindinput="accountId" type="text"/>
+      </view>
+      <view class="box section _1fdec9f">
+        <text class="input-label _1fdec9f">密码：</text><input value="{{password}}" password class="inputBOX _1fdec9f" type="password" bindinput="pwd"/>
+      </view>
+      <!-- <view class='box'> -->
+        <button class="button _1fdec9f" bindtap="login"> 登陆 </button>
+      <!-- </view> -->   
+</view>
